@@ -7,3 +7,26 @@ spring:
       chat:
         options:
           model: qwen-plus
+  # MCP Client Configuration
+    mcp:
+      client:
+        stdio:
+          servers-configuration: classpath:mcp-server.json
+    vectorstore:
+      pgvector:
+        index-type: HNSW
+        dimensions: 1536
+        distance-type: COSINE_DISTANCE
+        max-document-batch-size: 10000 # Optional: Maximum number of documents per batch
+  datasource:
+    url: jdbc:postgresql://rm-cn-h964po5pe00017to.rwlb.rds.aliyuncs.com:5432/health_ai_agent
+    username: my_user
+    password: Lixuefei123
+
+# searchApi
+search-api:
+  api-key: X5geWWJ2tGNC1dHQcz1hXzHc
+
+
+
+
