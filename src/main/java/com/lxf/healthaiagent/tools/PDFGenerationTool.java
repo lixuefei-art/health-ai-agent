@@ -10,8 +10,10 @@ import com.itextpdf.layout.element.Paragraph;
 import com.lxf.healthaiagent.constant.FileConstant;
 import org.springframework.ai.tool.annotation.Tool;
 import org.springframework.ai.tool.annotation.ToolParam;
+import org.springframework.core.io.ClassPathResource;
 
 import java.io.IOException;
+import java.io.InputStream;
 
 public class PDFGenerationTool {
 
@@ -28,13 +30,13 @@ public class PDFGenerationTool {
             try (PdfWriter writer = new PdfWriter(filePath);
                  PdfDocument pdf = new PdfDocument(writer);
                  Document document = new Document(pdf)) {
-                // 自定义字体（需要人工下载字体文件到特定目录）
-//                String fontPath = Paths.get("src/main/resources/static/fonts/simsun.ttf")
-//                        .toAbsolutePath().toString();
-//                PdfFont font = PdfFontFactory.createFont(fontPath,
-//                        PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
-                // 使用内置中文字体
-                PdfFont font = PdfFontFactory.createFont("STSongStd-Light", "UniGB-UCS2-H");
+                // 使用自定义宋体字体文件
+                ClassPathResource fontResource = new ClassPathResource("fonts/simsun.ttf");
+                PdfFont font;
+                try (InputStream fontStream = fontResource.getInputStream()) {
+                    font = PdfFontFactory.createFont(fontStream.readAllBytes(),
+                            PdfFontFactory.EmbeddingStrategy.PREFER_EMBEDDED);
+                }
                 document.setFont(font);
                 // 创建段落
                 Paragraph paragraph = new Paragraph(content);

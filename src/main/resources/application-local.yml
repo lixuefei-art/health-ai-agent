@@ -3,11 +3,14 @@ spring:
     name: spring-ai-alibaba-qwq-chat-client-example
   ai:
     dashscope:
-      api-key: sk-3fa0170f38764f79afe8b365c6ae4cfe
+      api-key: sk-7f377d9318cc4b1eb348b5e775003166
       chat:
         options:
           model: qwen-plus
-  # MCP Client Configuration
+      embedding:
+        options:
+          model: text-embedding-v2
+    # MCP Client Configuration
     mcp:
       client:
         stdio:
