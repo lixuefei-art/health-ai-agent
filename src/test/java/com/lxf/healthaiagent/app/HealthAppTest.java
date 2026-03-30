@@ -27,4 +27,11 @@ class HealthAppTest {
         HealthApp.HealthReport healthReport = app.doChatWithReport("我感冒了，怎么办？", chatId);
         assertNotNull(healthReport);
     }
+
+    @Test
+    void doChatWithRag() {
+        String chatId = UUID.randomUUID().toString();
+        String result = app.doChatWithRag("经常头晕是怎么回事", chatId);
+        assertNotNull(result);
+    }
 }
