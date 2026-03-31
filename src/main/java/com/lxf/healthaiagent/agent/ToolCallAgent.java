@@ -72,6 +72,7 @@ public class ToolCallAgent extends ReActAgent {
                     .chatResponse();
             // 记录响应，用于 Act
             this.toolCallChatResponse = chatResponse;
+            assert chatResponse != null;
             AssistantMessage assistantMessage = chatResponse.getResult().getOutput();
             // 输出提示信息
             String result = assistantMessage.getText();

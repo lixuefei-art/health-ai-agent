@@ -1,0 +1,30 @@
+spring:
+  application:
+    name: health-ai-agent
+  ai:
+    dashscope:
+      api-key: ${DASHSCOPE_API_KEY:sk-7f377d9318cc4b1eb348b5e775003166}
+      chat:
+        options:
+          model: ${AI_MODEL:qwen-plus}
+      embedding:
+        options:
+          model: ${EMBEDDING_MODEL:text-embedding-v2}
+    # MCP Client Configuration - prod环境禁用stdio MCP，避免本地JAR路径不存在导致超时
+    mcp:
+      client:
+        enabled: false
+#        stdio:
+#          servers-configuration: classpath:mcp-server.json
+    vectorstore:
+      pgvector:
+        index-type: ${VECTOR_INDEX_TYPE:HNSW}
+        dimensions: ${VECTOR_DIMENSIONS:1536}
+        distance-type: ${VECTOR_DISTANCE_TYPE:COSINE_DISTANCE}
+        max-document-batch-size: ${VECTOR_BATCH_SIZE:10000}
+  datasource:
+    url: ${DATABASE_URL:jdbc:postgresql://rm-cn-h964po5pe00017to.rwlb.rds.aliyuncs.com:5432/health_ai_agent}
+    username: ${DATABASE_USERNAME:my_user}
+    password: ${DATABASE_PASSWORD:Lixuefei123}
+
+

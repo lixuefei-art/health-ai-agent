@@ -26,10 +26,4 @@ spring:
     username: my_user
     password: Lixuefei123
 
-# searchApi
-search-api:
-  api-key: X5geWWJ2tGNC1dHQcz1hXzHc
-
-
-
 

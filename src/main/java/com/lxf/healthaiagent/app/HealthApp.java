@@ -3,19 +3,18 @@ package com.lxf.healthaiagent.app;
 import com.lxf.healthaiagent.advisor.MyLoggerAdvisor;
 import com.lxf.healthaiagent.chatmemory.FileBasedChatMemory;
 import jakarta.annotation.Resource;
+import org.springframework.beans.factory.annotation.Autowired;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
-import org.springframework.ai.chat.client.advisor.QuestionAnswerAdvisor;
 import org.springframework.ai.chat.client.advisor.api.Advisor;
 import org.springframework.ai.chat.memory.ChatMemory;
-import org.springframework.ai.chat.memory.InMemoryChatMemory;
 import org.springframework.ai.chat.model.ChatModel;
 import org.springframework.ai.chat.model.ChatResponse;
 import org.springframework.ai.tool.ToolCallback;
 import org.springframework.ai.tool.ToolCallbackProvider;
-import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.stereotype.Component;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -137,10 +136,13 @@ public class HealthApp {
     /**
      * MCP 工具调用
      */
-    @Resource
+    @Autowired(required = false)
     private ToolCallbackProvider mcpToolCallbackProvider;
 
     public String doChatWithMcp(String message, String chatId) {
+        if (mcpToolCallbackProvider == null) {
+            return "MCP服务在当前环境不可用";
+        }
         ChatResponse response = chatClient
                 .prompt()
                 .user(message)
@@ -154,6 +156,21 @@ public class HealthApp {
         return content;
     }
 
+    /**
+     * 流式调用
+     * @param message 用户消息
+     * @param chatId 会话id
+     * @return 对话结果流
+     */
+    public Flux<String> doChatByStream(String message, String chatId) {
+        return chatClient
+                .prompt()
+                .user(message)
+                .advisors(spec -> spec.param(CHAT_MEMORY_CONVERSATION_ID_KEY, chatId)
+                        .param(CHAT_MEMORY_RETRIEVE_SIZE_KEY, 10))
+                .stream()
+                .content();
+    }
 
 
 }
